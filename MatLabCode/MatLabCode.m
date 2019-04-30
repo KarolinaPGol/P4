@@ -5,7 +5,7 @@ Ts = 1/Fs;
 L = 0:Ts:1;
 %L = L.';
 
-%Getting min, max values
+%GETTING MIN, MAX VALUES (longass code)
 signalLength = length(in);
 fRangeOfSignal =(0:signalLength-1)*(Fs/signalLength);
 
