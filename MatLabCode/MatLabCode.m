@@ -1,11 +1,20 @@
 [in2,Fs] = audioread('Elise.mp3');
-in = in2(1:400000,1);
+in = in2(1:400000,1); %cutting the signal so its shorter 
 
 Ts = 1/Fs;
 L = 0:Ts:1;
 %L = L.';
 
+
+
 %GETTING MIN, MAX VALUES (longass code)
+%What is it all about:
+%Problem was that there is no maximum value of frequency because there are
+%infinate numbers of overtones. What I wanted to do here is to eliminate
+%all of them and only leave the loud, sharp piano key sounds. Then we're
+%finding those key sound's frequencies.
+
+%1. Fast fourier transform
 signalLength = length(in);
 fRangeOfSignal =(0:signalLength-1)*(Fs/signalLength);
 
@@ -16,7 +25,7 @@ plot(fRangeOfSignal,power)
 xlabel('Frequency')
 ylabel('Power')
 
-%Finding frequencies  that magnitude is > 0.25 (so they are relevant) /
+%2.Finding frequencies  that magnitude is > 0.25 (so they are relevant) /
 %/ eliminating harmonics
 relevantFrequencies = 69;
 for n =1:round(signalLength/2) %we take first half of the values 
@@ -27,7 +36,7 @@ for n =1:round(signalLength/2) %we take first half of the values
 end
 relevantFrequencies=relevantFrequencies'; %transposing so its raw not clumn
 
-%Finding how many distinguishible frequency there are
+%3. Finding how many different notes there are
 %it is done depending on how many seminotes there are
 howManygroups=0;
 for k = 1:length(relevantFrequencies)-1
@@ -36,14 +45,14 @@ for k = 1:length(relevantFrequencies)-1
     end   
 end
 
-%Grouping into 5 frequency groups
+%4. Grouping into 4 (=howManygroups) frequency groups
 [idx,soundFreq] = kmeans(relevantFrequencies,howManygroups);
 soundFreq %printing the mean frequencies of those groups: ~ frequencies of the notes
 
 %inTransformedMag = abs(inTransformed);
 %plot(inTransformedMag)
 
-
+%5. Finding the biggest frequency value of the note
 Fmax = max(soundFreq);
 
 
