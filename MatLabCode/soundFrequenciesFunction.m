@@ -26,7 +26,7 @@ for n =1:round(signalLength/2) %we take first half of the values
        relevantFrequencies = [relevantFrequencies, fRangeOfSignal(n)];
     end
 end
-relevantFrequencies=relevantFrequencies'; %transposing so its raw not clumn
+relevantFrequencies=relevantFrequencies'; %transposing so its raw not column
 
 %3. Finding how many different notes there are
 %it is done depending on how many seminotes there are

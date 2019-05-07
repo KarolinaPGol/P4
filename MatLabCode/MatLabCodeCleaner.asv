@@ -77,3 +77,14 @@ audiowrite('outputFiles/bp5.wav',sinWaves{5},Fs)
 audiowrite('outputFiles/bp6.wav',sinWaves{6},Fs)
 audiowrite('outputFiles/bp7.wav',sinWaves{7},Fs)
 
+
+
+
+
+
+
+
+%Code that i removed:
+%groupedFrequencies = 69;
+%if (((relevantFrequencies(k+1)/relevantFrequencies(k)) <  -1.1) && ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 0)) || (((relevantFrequencies(k+1)/relevantFrequencies(k)) < 0.0) && ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.2))
+%((relevantFrequencies(k+1)/relevantFrequencies(k)) < 0.9) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.2) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > -0.9) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) < -1.2)
