@@ -6,7 +6,7 @@ Ts = 1/Fs;
 L = 0:Ts:1;
 
 
-%1. FINDING MIN, MAX VALUES OF THE DOMINATING FREQUENCIES 
+%1. FINDING THE FREQUENCY OF THE LOWEST AND HIGHEST NOTES
 %What is it all about:
 %Problem was that there is no maximum value of frequency because there are
 %infinate numbers of overtones. What I wanted to do here is to eliminate
@@ -39,7 +39,7 @@ CellsWithSignals{j} = bandpass(in,[rangesStartingPoints(j) rangesStartingPoints(
 end
 
 
-% %3. PITCH SHIFTING
+% %?. PITCH SHIFTING
 % %%semitones = 1;   %it cant be 0 because some errors pop  
 % 
 % %if the song has too high frequency shift the whole thing down
@@ -51,9 +51,9 @@ end
 %    sound(out,Fs);
 % end
 
-%4. CREATING SIN WAVE FOR EACH OF THE 7 SIGNALS
+%3. CREATING SIN WAVE FOR EACH OF THE 7 SIGNALS
 
-%4.a Finding fundamental frequency of a signal and creating sinWaves
+%3.a Finding fundamental frequency of a signal and creating sinWaves
 
 CellsSignalsFF = cell(7,1);
 meanFreq = zeros(1,7);
@@ -77,14 +77,3 @@ audiowrite('outputFiles/bp5.wav',sinWaves{5},Fs)
 audiowrite('outputFiles/bp6.wav',sinWaves{6},Fs)
 audiowrite('outputFiles/bp7.wav',sinWaves{7},Fs)
 
-
-
-
-
-
-
-
-%Code that i removed:
-%groupedFrequencies = 69;
-%if (((relevantFrequencies(k+1)/relevantFrequencies(k)) <  -1.1) && ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 0)) || (((relevantFrequencies(k+1)/relevantFrequencies(k)) < 0.0) && ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.2))
-%((relevantFrequencies(k+1)/relevantFrequencies(k)) < 0.9) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.2) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > -0.9) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) < -1.2)

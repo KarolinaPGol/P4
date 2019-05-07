@@ -6,7 +6,7 @@ Ts = 1/Fs;
 L = 0:Ts:1;
 
 
-%1. FINDING MIN, MAX VALUES OF THE DOMINATING FREQUENCIES 
+%1. FINDING THE FREQUENCY OF THE LOWEST AND HIGHEST NOTES
 %What is it all about:
 %Problem was that there is no maximum value of frequency because there are
 %infinate numbers of overtones. What I wanted to do here is to eliminate
@@ -20,7 +20,7 @@ L = 0:Ts:1;
 Fmax = max(soundFreq);
 Fmin = min(soundFreq);
 
-%2. BAND-PASS FILTER
+%2. APPLYING BAND-PASS FILTER AND DIVIDING TO 7 RANGES
 distance = (Fmax-Fmin)/7; %distance between 7 ranges
 
 %2.a Saving Starting points of the ranges in the rangesStartingPoints array
@@ -39,7 +39,7 @@ CellsWithSignals{j} = bandpass(in,[rangesStartingPoints(j) rangesStartingPoints(
 end
 
 
-% %3. PITCH SHIFTING
+% %?. PITCH SHIFTING
 % %%semitones = 1;   %it cant be 0 because some errors pop  
 % 
 % %if the song has too high frequency shift the whole thing down
@@ -51,9 +51,9 @@ end
 %    sound(out,Fs);
 % end
 
-%4. CREATING SIN WAVE FOR EACH OF THE 7 SIGNALS
+%3. CREATING SINe WAVE FOR EACH OF THE 7 RANGES
 
-%4.a Finding fundamental frequency of a signal and creating sinWaves
+%3.a Finding fundamental frequency of a signal and creating sinWaves
 
 CellsSignalsFF = cell(7,1);
 meanFreq = zeros(1,7);
@@ -68,7 +68,7 @@ end
 
 % sound(sinWaves{1})
 
-%5. EXPORTING OUTPUT FILES
+%5. EXPORTING THE SINE WAVES AS A 7 AUDIO FILES
 audiowrite('outputFiles/bp1.wav',sinWaves{1},Fs)
 audiowrite('outputFiles/bp2.wav',sinWaves{2},Fs)
 audiowrite('outputFiles/bp3.wav',sinWaves{3},Fs)
