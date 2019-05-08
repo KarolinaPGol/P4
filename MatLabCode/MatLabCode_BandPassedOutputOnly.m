@@ -42,6 +42,15 @@ for j = 1:7
 CellsWithSignals{j} = bandpass(in,[rangesStartingPoints(j) rangesStartingPoints(j+1)],Fs);
 end
 
+% 5. EXPORTING THE BAND-PASS AS A 7 AUDIO FILES
+audiowrite('outputFiles/bp1.wav',CellsWithSignals{1},Fs)
+audiowrite('outputFiles/bp2.wav',CellsWithSignals{2},Fs)
+audiowrite('outputFiles/bp3.wav',CellsWithSignals{3},Fs)
+audiowrite('outputFiles/bp4.wav',CellsWithSignals{4},Fs)
+audiowrite('outputFiles/bp5.wav',CellsWithSignals{5},Fs)
+audiowrite('outputFiles/bp6.wav',CellsWithSignals{6},Fs)
+audiowrite('outputFiles/bp7.wav',CellsWithSignals{7},Fs)
+
 % fRangeOfSignal_temp =(0:signalLength-1)*(Fs/signalLength);
 % inTransformed_temp = fft(CellsWithSignals{3});
 % power_temp = abs(inTransformed_temp).^2/signalLength;    % power of the DFT
@@ -56,41 +65,7 @@ end
 %     end
 %     CellsWithSignals{k} = temp_arr;
 % end 
-index=0; %debugging
-which_i = 0;    %debugging
 
-
-%THIS IS A TEST PART:
-step_ = 1000; %its called step_ because 'step' is some matlab function
-fprintf('CellsWithSignals{3} before loop: \n')
-fig2 = figure;
-plot(CellsWithSignals{3})
- for i = 1:length(CellsWithSignals{3})-2 %step size e.g.10 (1,10,20,30)
-    % fprintf('Im inside for loop\n ')
-     temp_arr = CellsWithSignals{3};
-     %mean(peak2peak(temp_arr(i:i+step_)))
-     %mean(peak2peak(temp_arr(i:i+step_)));
-        if abs(temp_arr(i)) < 0.5
-            temp_arr(i) = 0; 
-            
-            %debugging:
-            index=index + 1; %for debugging, to see how many times we entered the loop
-            which_i = [which_i i]; %for debuggins, so we see on which indexes it enters
-            % fprintf('Im inside if statement\n ')           
-        end
- end
-%   CellsWithSignals{3} = temp_arr;
-    fprintf('CellsWithSignals{3} after loop: \n')
-   fig3 = figure;
-    plot(temp_arr)
-    
-    
-    
-    fileID = fopen('testfile.txt','w');
-    fprintf(fileID,'%f\n',CellsWithSignals{3});
-    fclose(fileID);
-    
-    
 
 % %?. PITCH SHIFTING
 % %%semitones = 1;   %it cant be 0 because some errors pop  
