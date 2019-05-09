@@ -1,6 +1,6 @@
 % 1. Taking an audio signal in form of the popular song
 % 2. STEM analyzing it using external program to extract the melody of one instrument
-%%
+
 [in,Fs] = audioread('Elise.mp3');
 in = in2(1:400000,1); %cutting the signal so its shorter, for testing purposes
 
