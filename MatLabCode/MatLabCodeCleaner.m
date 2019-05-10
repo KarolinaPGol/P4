@@ -59,7 +59,6 @@ end
 index=0; %debugging
 which_i = 0;    %debugging
 
-
 %THIS IS A TEST PART:
 step_ = 1000; %its called step_ because 'step' is some matlab function
 fprintf('CellsWithSignals{3} before loop: \n')
