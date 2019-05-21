@@ -16,7 +16,7 @@ L = 0:Ts:1;
 
 %1. Fast fourier transform
 signalLength = length(in);
-fRangeOfSignal =(0:signalLength-1)*(Fs/signalLength);
+fRangeOfSignal =(0:signalLength-1)*(Fs/signalLength); %calculating the frequency of the signal instead 
 
 inTransformed = fft(in);
 power = abs(inTransformed).^2/signalLength;    % power of the DFT
@@ -40,7 +40,7 @@ relevantFrequencies=relevantFrequencies'; %transposing so its raw not clumn
 %it is done depending on how many seminotes there are
 howManygroups=0;
 for k = 1:length(relevantFrequencies)-1
-    if ((relevantFrequencies(k+1)/relevantFrequencies(k)) <  -1.1) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.2)
+    if ((relevantFrequencies(k+1)/relevantFrequencies(k)) <  -1.1) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.1)
         howManygroups=howManygroups+1;
     end   
 end
@@ -48,6 +48,13 @@ end
 %4. Grouping into 4 (=howManygroups) frequency groups
 [idx,soundFreq] = kmeans(relevantFrequencies,howManygroups);
 soundFreq %printing the mean frequencies of those groups: ~ frequencies of the notes
+
+plot(relevantFrequencies,'r*','MarkerSize',5)
+hold on
+
+plot(soundFreq, 'y*', 'MarkerSize', 8)
+
+hold off
 
 %inTransformedMag = abs(inTransformed);
 %plot(inTransformedMag)
@@ -59,14 +66,14 @@ Fmax = max(soundFreq);
 %PITCH SHIFTING
 %%semitones = 1;   %it cant be 0 because some errors pop  
 
-%if the song has too high frequency shift the whole thing down
-if Fmax > 700
-   semitones = -round(Fmax/700)  %the same as    FrequencyOfSong = Fmax-700.
-   %we have to do it that way, the ratio between Fmax/700 will tell us how
-   %many semitones we have to shift our song
-   [out] = pitchShifter(in,Fs,semitones);
-   sound(out,Fs);
-end
+% %if the song has too high frequency shift the whole thing down
+% if Fmax > 700
+%    semitones = -round(Fmax/700)  %the same as    FrequencyOfSong = Fmax-700.
+%    %we have to do it that way, the ratio between Fmax/700 will tell us how
+%    %many semitones we have to shift our song
+%    [out] = pitchShifter(in,Fs,semitones);
+%    sound(out,Fs);
+% end
 
 
 

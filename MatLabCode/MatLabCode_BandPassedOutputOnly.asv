@@ -1,7 +1,9 @@
 % 1. Taking an audio signal in form of the popular song
 % 2. STEM analyzing it using external program to extract the melody of one instrument
 
-[in,Fs] = audioread('Elise.mp3');
+fprintf('PROGRAM START \n');
+
+[in2,Fs] = audioread('Elise.mp3');
 in = in2(1:400000,1); %cutting the signal so its shorter, for testing purposes
 
 signalLength = length(in);
@@ -37,97 +39,74 @@ end
 rangesStartingPoints
 
 %4.b Storing band-passed signals in the cell array
-CellsWithSignals = cell(7,1);
-for j = 1:7
-CellsWithSignals{j} = bandpass(in,[rangesStartingPoints(j) rangesStartingPoints(j+1)],Fs);
+
+BandPassedSignals = bandpass(in,[rangesStartingPoints(1) rangesStartingPoints(2)],Fs);
+for j = 2:7
+BandPassedSignals = [BandPassedSignals bandpass(in,[rangesStartingPoints(j) rangesStartingPoints(j+1)],Fs)];
 end
 
-%5. CREATING SINE WAVE FOR EACH OF THE 7 RANGES
+%5. PITCH SHIFTING
 
 %5.a Finding a mean of fundamental frequencies of a signal
-CellsSignalsFF = cell(7,1);
+CellsWithSignalsFundamentalFreq = cell(7,1);
 meanFreq = zeros(1,7);
 
-sinWaves = cell(1,7);
+%sinWaves = cell(1,7);
+
 for jj = 1:7
-CellsSignalsFF{jj} = pitch(CellsWithSignals{jj}, Fs);
-meanFreq(jj) = mean(CellsSignalsFF{jj});
+CellsWithSignalsFundamentalFreq{jj} = pitch(BandPassedSignals(:,jj), Fs);
+meanFreq(jj) = mean(CellsWithSignalsFundamentalFreq{jj});
 end
 
-%6. PITCH SHIFTING
-%shift all the frequencies if the highest of them is above 700Hz
-pitchShiftedSignals = cell(7,1);
-wasItPitchShifted = false;
+%5.b Shifting all the frequencies if the highest of them is above 700Hz
+pitchShiftedSignals = zeros(signalLength,7);
+
 if max(meanFreq) > 700 
-   wasItPitchShifted = true;
+   fprintf('Maximum frequency value is higher then 700 \n');
+   fprintf('Starting pitch shifting procedure \n');
    semitones = -round(max(meanFreq)/700); 
    %we have to do it that way, the ratio between max(meanFreq)/700 will tell us how
    %many semitones we have to shift our song   
    for jj = 1:7
        
-       pitchShiftedSignals{jj} = pitchShifter(CellsWithSignals{jj},Fs,semitones);
+       pitchShiftedSignals(:,jj) = pitchShifter(BandPassedSignals(:,jj),Fs,semitones);
        
    end   
- 
-% 5. EXPORTING THE BAND-PASS AS A 7 AUDIO FILES   
-fprintf('Exporting pitch shifted files: \n');
 
-audiowrite('outputFiles/bp1.wav',pitchShiftedSignals{1},Fs)
-audiowrite('outputFiles/bp2.wav',pitchShiftedSignals{2},Fs)
-audiowrite('outputFiles/bp3.wav',pitchShiftedSignals{3},Fs)
-audiowrite('outputFiles/bp4.wav',pitchShiftedSignals{4},Fs)
-audiowrite('outputFiles/bp5.wav',pitchShiftedSignals{5},Fs)
-audiowrite('outputFiles/bp6.wav',pitchShiftedSignals{6},Fs)
-audiowrite('outputFiles/bp7.wav',pitchShiftedSignals{7},Fs)
-fprintf('Exporting pitch shifted files DONE: \n');
+% 6. EXPORTING 7 AUDIO FILES   
+
+fprintf('Exporting pitch shifted files \n');
+
+matrixSignalsPS = pitchShiftedSignals(1);
+for i=2:7
+    
+   matrixSignalsPS = [matrixSignalsPS pitchShiftedSignals(:,i)];
+    
+end 
+
+matrixSignals = [matrixSignals zeros(signalLength,1)];
+
+audiowrite('outputFiles/8channels.wav',matrixSignalsPS,Fs)
+
+fprintf('Exporting pitch shifted files DONE \n');
 
 else 
 
-fprintf('Exporting band-passed files: \n');
+fprintf('Exporting band-passed files \n');
 
-audiowrite('outputFiles/bp1.wav',CellsWithSignals{1},Fs)
-audiowrite('outputFiles/bp2.wav',CellsWithSignals{2},Fs)
-audiowrite('outputFiles/bp3.wav',CellsWithSignals{3},Fs)
-audiowrite('outputFiles/bp4.wav',CellsWithSignals{4},Fs)
-audiowrite('outputFiles/bp5.wav',CellsWithSignals{5},Fs)
-audiowrite('outputFiles/bp6.wav',CellsWithSignals{6},Fs)
-audiowrite('outputFiles/bp7.wav',CellsWithSignals{7},Fs)
-fprintf('Exporting band-passed files DONE: \n');
+matrixSignals = CellsWithSignals{1};
+for i=2:7
+    
+   matrixSignals = [matrixSignals CellsWithSignals{i}];
+    
+end 
 
-end %if-else end
+matrixSignals = [matrixSignals zeros(signalLength,1)];
 
-%     shift = Fmax-700;
-%     meanFreq = meanFreq - shift;
-%     for kk = 1:7
-%         %making sure no value is below 0
-%         if meanFreq(kk) <0
-%             meanFreq(kk) = 0;
-%         end
-%     end
-% end
+audiowrite('outputFiles/8channels.wav',matrixSignals,Fs)
 
- %?. PITCH SHIFTING
-% %%semitones = 1;   %it cant be 0 because some errors pop  
-% 
-% %if the song has too high frequency shift the whole thing down
-% if Fmax > 700
-%    semitones = -round(Fmax/700)  %the same as    FrequencyOfSong = Fmax-700.
-%    %we have to do it that way, the ratio between Fmax/700 will tell us how
-%    %many semitones we have to shift our song
-%    [out] = pitchShifter(in,Fs,semitones);
-%    sound(out,Fs);
-% end
-% end
+fprintf('Exporting band-passed files DONE \n');
 
-% sound(sinWaves{1})
-% 
-% %8. EXPORTING THE SINE WAVES AS A 7 AUDIO FILES
-% audiowrite('outputFiles/bp1.wav',sinWaves{1},Fs)
-% audiowrite('outputFiles/bp2.wav',sinWaves{2},Fs)
-% audiowrite('outputFiles/bp3.wav',sinWaves{3},Fs)
-% audiowrite('outputFiles/bp4.wav',sinWaves{4},Fs)
-% audiowrite('outputFiles/bp5.wav',sinWaves{5},Fs)
-% audiowrite('outputFiles/bp6.wav',sinWaves{6},Fs)
-% audiowrite('outputFiles/bp7.wav',sinWaves{7},Fs)
+ end %if-else end
 
 fprintf('PROGRAM DONE \n')

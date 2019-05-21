@@ -1,5 +1,5 @@
 function [soundFreq] = soundFrequenciesFunction(in, Fs)
-%GETTING MIN, MAX VALUES
+%GETTING MIN, MAX VALUES (longass code)
 %What is it all about:
 %Problem was that there is no maximum value of frequency because there are
 %infinate numbers of overtones. What I wanted to do here is to eliminate
@@ -20,7 +20,7 @@ ylabel('Power')
 %2.Finding frequencies  that magnitude is > 0.25 (so they are relevant) /
 %/ eliminating harmonics
 relevantFrequencies = 0;
-for n =1:round(signalLength/2) %we take first half of the values because thats how it works
+for n =1:round(signalLength/2) %we take first half of the values 
     
     if power(n) > 0.25
        relevantFrequencies = [relevantFrequencies, fRangeOfSignal(n)];
