@@ -1,0 +1,1 @@
+[num,txt,raw] = xlsread('myfile') ;
