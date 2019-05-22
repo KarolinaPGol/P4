@@ -6,6 +6,8 @@ Vibrations = table2array(excel_file(:,13:20));
 Overall = table2array(excel_file(:,21:30));
 
 
+
+
 % %Histograms for each question and each group
 % figure(1)
 % for i=1:12
@@ -50,6 +52,8 @@ OverallC_all = cronbach(Overall);
 
 All = [Visual Vibrations Overall];
 
+AllC = cronbach(All);
+
 % Means to each question
 EachQuestionMean = mean(All);
 
@@ -59,11 +63,23 @@ OverallMean = mean(Overall,'all');
 
 AllMean = mean(All, 'all');
 
-%continue with guides from:
-%https://www.statisticssolutions.com/manova-analysis-one-sample-t-test/
+%Standard deviation
 
+AllSD = std(All,0,'all');
 
+%t-test
+t = (AllMean-1)\(AllSD/sqrt(30))
 
+% %Normal distribution plot:
+% %%first putting all data in one vector
+% s = size(All); 
+% S = s(1)*s(2);
+% All_Vector = reshape(All,1,S);
+% 
+% y = normpdf(All_Vector,AllMean,AllSD);
+% plot(All_Vector,y);
+
+t = ttest(x,AllMean,'Tail','right')
 
 %Unused:
 %thats if we take 2 grups of two scenarios:
