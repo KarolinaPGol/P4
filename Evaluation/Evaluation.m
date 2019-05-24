@@ -67,19 +67,22 @@ AllMean = mean(All, 'all');
 
 AllSD = std(All,0,'all');
 
-%t-test
-t = (AllMean-1)\(AllSD/sqrt(30))
-
 % %Normal distribution plot:
-% %%first putting all data in one vector
-% s = size(All); 
-% S = s(1)*s(2);
-% All_Vector = reshape(All,1,S);
+%%first putting all data in one vector
+s = size(All); 
+S = s(1)*s(2);
+AllVector = reshape(All,1,S);
 % 
 % y = normpdf(All_Vector,AllMean,AllSD);
 % plot(All_Vector,y);
 
-t = ttest(x,AllMean,'Tail','right')
+%t = ttest(x,AllMean,'Tail','right')
+[p,h,stats] = signrank(median(AllVector),1,'tail','right')
+
+v = nonzeros(AllVector');
+v';
+histogram(v)
+
 
 %Unused:
 %thats if we take 2 grups of two scenarios:
