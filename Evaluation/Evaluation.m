@@ -1,10 +1,16 @@
 excel_file = readtable('LikertOnly.xlsx');
+%excel_file2 = readtable('LikertOnly2.xlsx');
 
 % Scenario A & B combined
 Visual = table2array(excel_file(:,1:12));
 Vibrations = table2array(excel_file(:,13:20));
 Overall = table2array(excel_file(:,21:30));
 
+All2 = [Visual Vibrations Overall];
+
+% Visual2 = table2array(excel_file(:,1:12));
+% Vibrations2 = table2array(excel_file(:,13:20));
+% Overall2 = table2array(excel_file(:,21:30));
 
 
 
@@ -42,6 +48,7 @@ VisualNeg = [1,4,6,8,10,11,12];
 VibrationsNeg = [2,3,5,7];  
 OverallNeg = [1,4,5,8,9,10];
 
+
 Visual(:,VisualNeg) = 5-Visual(:,VisualNeg); %(all rows, columns negative questions) = and we change them with 5-element value
 Vibrations(:,VibrationsNeg) = 5-Vibrations(:,VibrationsNeg);
 Overall(:,OverallNeg) = 5-Overall(:,OverallNeg);
@@ -72,16 +79,28 @@ AllSD = std(All,0,'all');
 s = size(All); 
 S = s(1)*s(2);
 AllVector = reshape(All,1,S);
+All2 = reshape(All2,1,S);
 % 
 % y = normpdf(All_Vector,AllMean,AllSD);
 % plot(All_Vector,y);
 
 %t = ttest(x,AllMean,'Tail','right')
-[p,h,stats] = signrank(median(AllVector),1,'tail','right')
+%[p,h,stats] = signrank(median(AllVector),1,'tail','right')
 
-v = nonzeros(AllVector');
-v';
-histogram(v)
+data = nonzeros(AllVector');
+data2 = nonzeros(All2'); %making data2 different
+data2 = data2(1:865,1);
+
+subplot(1,2,1);
+hist1=data';
+histogram(hist1)
+subplot(1,2,2);
+hist2 = data2';
+histogram(hist2)
+
+[p,h,stats] = signrank(data, data2);
+
+
 
 
 %Unused:

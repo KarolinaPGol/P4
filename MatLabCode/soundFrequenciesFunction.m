@@ -30,6 +30,7 @@ relevantFrequencies=relevantFrequencies'; %transposing so its raw not column
 
 %3. Finding how many different notes there are
 %it is done depending on how many semitones there are
+sort(relevantFrequencies);  %-------------------NEW
 howManygroups=0;
 for k = 1:length(relevantFrequencies)-1
     if ((relevantFrequencies(k+1)/relevantFrequencies(k)) <  -1.1) || ((relevantFrequencies(k+1)/relevantFrequencies(k)) > 1.2)
@@ -38,6 +39,7 @@ for k = 1:length(relevantFrequencies)-1
 end
 
 %4. Grouping into 4 (=howManygroups) frequency groups
+
 [idx,soundFreq] = kmeans(relevantFrequencies,howManygroups);
 soundFreq %printing the mean frequencies of those groups: ~ frequencies of the notes
 
